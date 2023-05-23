@@ -4,12 +4,13 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class ProductManager:IProductService
+    public class ProductManager : IProductService
     {
         IProductDal _productDal;
 
@@ -17,33 +18,19 @@ namespace Business.Concrete
         {
             _productDal = productDal;
         }
-
-        public void Add(Product product)
-        {
-            _productDal.Add(product);
-        }
-
-        public void Delete(Product product)
-        {
-            _productDal.Delete(product);
-        }
-
         public List<Product> GetAll()
         {
-            // Business check
-            // Authorization check
-
             return _productDal.GetAll();
         }
 
-        public List<Product> GetAllByCategory(int categoryId)
+        public List<Product> GetAllByCategoryId(int id)
         {
-            return _productDal.GetAllByCategory(categoryId);
+            return _productDal.GetAll(p => p.CategoryId == id);
         }
 
-        public void Update(Product product)
+        public List<Product> GetAllByUnitPrice(decimal min, decimal max)
         {
-            _productDal.Update(product);
+            return _productDal.GetAll(p => p.UnitPrice >= min && p.UnitPrice <= max);
         }
     }
 }
