@@ -1,6 +1,6 @@
 ﻿using Business.Concrete;
+using Core.Utilities.Results;
 using DataAccess.Concrete.EntityFramework;
-using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 using Entities.DTOs;
 using System;
@@ -32,11 +32,20 @@ namespace ConsoleUI
         {
             ProductManager productManager = new ProductManager(new EfProductDal());
 
-            List<ProductDetailDto> products = productManager.GetProductDetails();
+            var dataResult = productManager.GetProductDetails();
+            var productsData = dataResult.Data;
 
-            foreach (ProductDetailDto product in products)
+            if (dataResult.Success)
             {
-                Console.WriteLine(product.ProductName + " - " + product.CategoryName);
+                foreach (var product in productsData)
+                {
+                    Console.WriteLine(product.ProductName + " / " + product.CategoryName);
+                }
+            }
+
+            else
+            {
+                Console.WriteLine(dataResult.Message);
             }
         }
     }
