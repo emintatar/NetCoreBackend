@@ -12,7 +12,7 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-             ProductTest();
+            // ProductTest();
             // CategoryTest();
         }
 
@@ -20,7 +20,8 @@ namespace ConsoleUI
         {
             CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
 
-            List<Category> categories = categoryManager.GetAll();
+            var dataResult = categoryManager.GetAll();
+            var categories = dataResult.Data;
 
             foreach (Category category in categories)
             {
@@ -30,7 +31,7 @@ namespace ConsoleUI
 
         private static void ProductTest()
         {
-            ProductManager productManager = new ProductManager(new EfProductDal());
+            ProductManager productManager = new ProductManager(new EfProductDal(), new CategoryManager(new EfCategoryDal()));
 
             var dataResult = productManager.GetProductDetails();
             var productsData = dataResult.Data;
